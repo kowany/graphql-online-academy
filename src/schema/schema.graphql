@@ -2,4 +2,72 @@ type Query {
     hello: String!
     helloWithName( name: String! ): String!
     peopleNumber: Int!
+    # Lista de estudiantes con todos los detalles de la academia
+    students: Result!
+    # Estudiante seleccionado con sus detalles en el caso de existir
+    student( id: ID!): Result!
+    # Lista de cursso con todos los detalles de la academia
+    courses: Result!
+    # Curso seleccionado con sus detalles en el caso de existir
+    course( id: ID!): Result!
+}
+
+type Mutation {
+    addCourse( course: CourseInput! ): Result!
+    updateCourse( course: CourseInput! ): Result!
+    deleteCourse( id: ID! ): Result!
+}
+union Data = Course | Student
+
+type Course {
+    id: ID!,
+    title: String!,
+    description: String!,
+    clases: Int!,
+    time: Float!,
+    level: String!,
+    logo: String!
+    path: String!,
+    teacher: String!,
+    price: Float!,
+    students: [Student!]!
+}
+input CourseInput {
+    id: ID,
+    title: String!,
+    description: String!,
+    clases: Int!,
+    time: Float!,
+    level: Level=ALL,
+    logo: String!
+    path: String!,
+    teacher: String!,
+    price: Float!,
+}
+
+enum Level {
+    ALL
+    NOVICE
+    MEDIUM
+    EXPERT
+}
+type Student {
+    id: ID!
+    name: String!
+    email: String!
+    website: String!
+    courses: [Course!]!
+}
+
+type Result {
+    status: Boolean!
+    message: String!
+    list: [Data!]
+    item: Data
+}
+type ResultCourse {
+    status: Boolean!
+    message: String!
+    list: [Course!]
+    item: Course
 }

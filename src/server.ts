@@ -3,6 +3,7 @@ import compression from "compression";
 import cors from "cors";
 import express, { Application } from "express";
 import { GraphQLSchema } from "graphql";
+import depthLimit from "graphql-depth-limit";
 import expressPlayGround from 'graphql-playground-middleware-express';
 import { createServer, Server as HTTPServer } from 'http';
 
@@ -47,7 +48,8 @@ class Server {
         const server = new ApolloServer({
             schema: this.schema,
             introspection: true,
-            playground: true
+            playground: true,
+            validationRules: [ depthLimit(3) ]
         });
         server.applyMiddleware( { app: this.app });
     }
